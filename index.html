@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Exchange API</title>
 
-    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
     <style>
       .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
@@ -16,11 +14,11 @@
   background-color: #272822;
 }
 .highlight .err {
-  color: #151515;
-  background-color: #ac4142;
+  color: #272822;
+  background-color: #f92672;
 }
 .highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
-  color: #505050;
+  color: #75715e;
 }
 .highlight .cp {
   color: #f4bf75;
@@ -29,45 +27,45 @@
   color: #f4bf75;
 }
 .highlight .o, .highlight .ow {
-  color: #d0d0d0;
+  color: #f8f8f2;
 }
 .highlight .p, .highlight .pi {
-  color: #d0d0d0;
+  color: #f8f8f2;
 }
 .highlight .gi {
-  color: #90a959;
+  color: #a6e22e;
 }
 .highlight .gd {
-  color: #ac4142;
+  color: #f92672;
 }
 .highlight .gh {
-  color: #6a9fb5;
-  background-color: #151515;
+  color: #66d9ef;
+  background-color: #272822;
   font-weight: bold;
 }
 .highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
-  color: #aa759f;
+  color: #ae81ff;
 }
 .highlight .kc {
-  color: #d28445;
+  color: #fd971f;
 }
 .highlight .kt {
-  color: #d28445;
+  color: #fd971f;
 }
 .highlight .kd {
-  color: #d28445;
+  color: #fd971f;
 }
 .highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
-  color: #90a959;
+  color: #a6e22e;
 }
 .highlight .sr {
-  color: #75b5aa;
+  color: #a1efe4;
 }
 .highlight .si {
-  color: #8f5536;
+  color: #cc6633;
 }
 .highlight .se {
-  color: #8f5536;
+  color: #cc6633;
 }
 .highlight .nn {
   color: #f4bf75;
@@ -79,209 +77,2020 @@
   color: #f4bf75;
 }
 .highlight .na {
-  color: #6a9fb5;
+  color: #66d9ef;
 }
 .highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
-  color: #90a959;
+  color: #a6e22e;
 }
 .highlight .ss {
-  color: #90a959;
+  color: #a6e22e;
 }
     </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[]">
     <a href="#" id="nav-button">
       <span>
         NAV
-        <img src="images/navbar.png" />
+        <img src="images/navbar.png" alt="Navbar" />
       </span>
     </a>
-    <div class="tocify-wrapper">
-      <img src="images/logo.png" />
-        <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-        </div>
+    <div class="tocify-wrapper" align='middle'>
+     <div class="content" tyle="margin: 0 auto; left: 50%;">
+      <img src="images/logo.png" alt="Logo" />
+      </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
-        <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
-        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>This is a proposed API that an exchange should build in order to be compatible with the Abra Exchange
+Flow.  By building this API, integration with Abra will be faster but, even more important, the user 
+experience will continue to be excellent.  This is a direct result of updates allowing a user to, at
+ any given moment, view their account or transaction status.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id="authorization">Authorization</h1>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<p>Every request will require an Authorization header to guarantee the origination of the request is a valid one.
+The Exchange will provide Abra with a <strong>Private Key</strong> and an <strong>API Key</strong>.</p>
 
-<h1 id="authentication">Authentication</h1>
+<h2 id="authorization-header">Authorization Header</h2>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>Authorization header must be in all requests to API.  It consists of the following:</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p><strong>Authorization: &lt;API Key&gt;:&lt;Nonce&gt;:&lt;Signature&gt;</strong></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
+<p><strong>API Key</strong> - Key provided by exchange<br>
+<strong>Nonce</strong> - a unique integer that increases for each API call.  UNIX timestamp is recommended<br>
+<strong>Signature</strong> - defined below</p>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
+<h3 id="signature">Signature</h3>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>The signature is generated by creating a SHA256 HMAC.  The Nonce, HTTPS Method, Request Path, and 
+Json Payload are concatenated and the Private Key is used as the secret key to create the HMAC.  The
+result is hex encoded.</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>The Nonce is the same as the one used in the Authorization.  The HTTPS Method and the Request Path
+ should match the request.  The JSON payload must also be the same as the one used in the request.</p>
 
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
+<h1 id="account-management">Account Management</h1>
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+<h2 id="get-banks">Get Banks</h2>
 
-<h1 id="kittens">Kittens</h1>
+<p>Get list of Banks that exchange works with</p>
 
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h3 id="https-request">HTTPS Request</h3>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p><code class="prettyprint">GET http://goabra.com/v1/banks</code></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="response">Response</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#bank">Bank</a></td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+<h2 id="get-required-fields">Get Required Fields</h2>
 
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>List of fields required for KYC verification</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<h3 id="https-request">HTTPS Request</h3>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
+<p><code class="prettyprint">GET http://goabra.com/v1/kyc_required_fields</code></p>
 
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="response">Response</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>array of <a href="#field">Fields</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="post-account">Post Account</h2>
+
+<p>Create a new Exchange Account for User</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">POST http://goabra.com/v1/accounts</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#new-account">New Account</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>Exchange Account Added</td>
+<td><a href="#exchange-account">Exchange Account</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-account">Get Account</h2>
+
+<p>Retrieve information for a specific Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#exchange-account">Exchange Account</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="patch-account">Patch Account</h2>
+
+<p>Modify data of the User&rsquo;s Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">PATCH http://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#new-account">New Account</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Exchange Account has been modified</td>
+<td><a href="#exchange-account">Exchange Account</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-kyc">Get KYC</h2>
+
+<p>Retrieve KYC information for Exchange Account  </p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#kyc">KYC</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="patch-kyc">Patch KYC</h2>
+
+<p>Add KYC information for the Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#kyc">KYC</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>KYC Information modified</td>
+<td><a href="#kyc">KYC</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-kyc-documents">Get KYC Documents</h2>
+
+<p>Returns array of KYC documents stored for an Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Success Response</td>
+<td>Array of <a href="#document">Documents</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="post-kyc-document">Post KYC Document</h2>
+
+<p>Add a KYC Document to an Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">POST http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#document">Document</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Document Added</td>
+<td><a href="#document">Documents</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-kyc-document">Delete KYC Document</h2>
+
+<p>Remove a KYC Document from an Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">DELETE http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents/?document_type=001</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>document_type</td>
+<td>query</td>
+<td>string</td>
+<td>Document type that relates to Document that needs to be removed</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Document Removed</td>
+<td>None</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td>KYC Document Not Found</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="orders">Orders</h1>
+
+<h2 id="get-transfer-quote">Get Transfer Quote</h2>
+
+<p>Receive Exchange Rate for Fiat Purchase</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/transfer_quote</code></p>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#quote">Quote</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-order-books">Get Order Books</h2>
+
+<p>Receive order books</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/order_books</code></p>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>Array of <a href="#order-book">Order Books</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-limit-orders">Get Limit Orders</h2>
+
+<p>Retrieve Limit Orders for Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#limit-order">Limit Order</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="post-limit-order">Post Limit Order</h2>
+
+<p>Create a new Limit Order for the Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#limit-order">Limit Order</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>Limit Order Created</td>
+<td><a href="#limit-order">Limit Order</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="patch-limit-order">Patch Limit Order</h2>
+
+<p>Make change to Limit Order for Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">PATCH http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>orderID</td>
+<td>path</td>
+<td>string</td>
+<td>Limit Order ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#limit-order">Limit Order</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#limit-order">Limit Order</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-limit-order">Delete Limit Order</h2>
+
+<p>Delete Limit Order for Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">DELETE http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>orderID</td>
+<td>path</td>
+<td>string</td>
+<td>Limit Order ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Limit Order Deleted</td>
+<td>None</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="transactions">Transactions</h1>
+
+<h2 id="get-btc-address">Get BTC Address</h2>
+
+<p>Retrieves a BTC Address that can be used to send BTC to User&rsquo;s Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/btc_address</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>BTC Address</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-transactions">Get Transactions</h2>
+
+<p>Retrieve Transactions for Exchange Account that match query parameters</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/?txtype=001&amp;txstatus=002</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>txtype</td>
+<td>query</td>
+<td>string</td>
+<td>Transaction Type</td>
+</tr>
+<tr>
+<td>txstatus</td>
+<td>query</td>
+<td>string</td>
+<td>Transaction Status</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>Array of <a href="#transaction">Transactions</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Accound ID or query parameters</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td>No Transaction Found</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="post-transaction">Post Transaction</h2>
+
+<p>Create a new Transaction for the Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">POST http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#transaction">Transaction</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Transaction Created</td>
+<td><a href="#transaction">Transaction</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-transaction">Get Transaction</h2>
+
+<p>Retrieve Transaction for Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/&lt;txid&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>txid</td>
+<td>path</td>
+<td>string</td>
+<td>Transaction ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#transaction">Transaction</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Accound ID or Transaction ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td>No Transaction Found</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+          <h1 id="definitions">Definitions</h1>
+
+<aside class="notice">The Definitions section defines the objects that are used throughout the REST API</aside>
+
+<h2 id="bank">Bank</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>bank_name</td>
+<td>string</td>
+<td>The name of the Bank</td>
+</tr>
+<tr>
+<td>bank_code</td>
+<td>string</td>
+<td>Code used by exchange to identify Bank</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+<td>Country of Bank in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a></td>
+</tr>
+<tr>
+<td>processing_hours</td>
+<td>array</td>
+<td>The processing hours for the Bank.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
+</tr>
+<tr>
+<td>branch_hours</td>
+<td>array</td>
+<td>The processing hours for the Bank.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
+</tr>
+<tr>
+<td>online_banking</td>
+<td>boolean</td>
+<td>Boolean that states if online banking is available</td>
+</tr>
+<tr>
+<td>deposit_fee</td>
+<td>string</td>
+<td>Fee applied by bank for deposit</td>
+</tr>
+<tr>
+<td>withdrawal_fee</td>
+<td>string</td>
+<td>Fee applied by bank for withdrawal</td>
+</tr>
+<tr>
+<td>account_types</td>
+<td>string</td>
+<td><a href="#account-type">Account types</a> available at bank</td>
+</tr>
+<tr>
+<td>account_validation_regex</td>
+<td>string</td>
+<td>Regex used for account validation</td>
+</tr>
+</tbody></table>
+
+<h2 id="book">Book</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_book</td>
+<td>string</td>
+<td>Name of Order Book</td>
+</tr>
+<tr>
+<td>price</td>
+<td>string</td>
+<td>Price per unit</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>string</td>
+<td>Amount in order</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>string</td>
+<td>Date of Book creation in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+</tbody></table>
+
+<h2 id="business-hours">Business Hours</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>start_time</td>
+<td>string</td>
+<td>Start time in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime format</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>string</td>
+<td>End time in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> datetime format</td>
+</tr>
+</tbody></table>
+
+<h2 id="document">Document</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>&ldquo;Name of Document&rdquo;</td>
+</tr>
+<tr>
+<td>document_type</td>
+<td>string</td>
+<td><a href="#document-type">Type of Document</a></td>
+</tr>
+<tr>
+<td>file_type</td>
+<td>string</td>
+<td>Options available are <code class="prettyprint">.jpeg</code>, <code class="prettyprint">pdf</code> or <code class="prettyprint">png</code></td>
+</tr>
+<tr>
+<td>file</td>
+<td>string</td>
+<td>Base64 encoded binary file</td>
+</tr>
+<tr>
+<td>document_id_number</td>
+<td>string</td>
+<td>Identifier number of Document</td>
+</tr>
+<tr>
+<td>name_on_doc</td>
+<td>string</td>
+<td>Name on document</td>
+</tr>
+</tbody></table>
+
+<h2 id="error-object">Error Object</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>error_code</td>
+<td>string</td>
+<td>Error Code</td>
+</tr>
+<tr>
+<td>error_message</td>
+<td>string</td>
+<td>Error Message</td>
+</tr>
+</tbody></table>
+
+<h2 id="exchange-account">Exchange Account</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>Account ID at Exchange</td>
+</tr>
+<tr>
+<td>api_key</td>
+<td>string</td>
+<td>API key for user</td>
+</tr>
+<tr>
+<td>account_status</td>
+<td>string</td>
+<td><a href="#account-status">Account Status</a></td>
+</tr>
+<tr>
+<td>status_message</td>
+<td>string</td>
+<td>Message explaining reason for current Status</td>
+</tr>
+<tr>
+<td>status_modified_date</td>
+<td>string</td>
+<td>Date of last status modification in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>string</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>middle_name</td>
+<td>string</td>
+<td>Middle name</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>string</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>second_last_name</td>
+<td>string</td>
+<td>Second last name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>Email</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>string</td>
+<td>Phone number</td>
+</tr>
+<tr>
+<td>kyc</td>
+<td>object</td>
+<td><a href="#kyc">KYC</a></td>
+</tr>
+<tr>
+<td>bank</td>
+<td>string</td>
+<td>Bank Code</td>
+</tr>
+<tr>
+<td>fiat_balance</td>
+<td>string</td>
+<td>Fiat balance amount</td>
+</tr>
+<tr>
+<td>btc_balance</td>
+<td>string</td>
+<td>Bitcoin balance amount</td>
+</tr>
+<tr>
+<td>fiat_account_number</td>
+<td>string</td>
+<td>Account number that receives Fiat amounts during Abra Deposit flow&quot;</td>
+</tr>
+<tr>
+<td>fiat_account_type</td>
+<td>string</td>
+<td><a href="#account-type">Type of Account</a></td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>string</td>
+<td>Created date of Exchange Account in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>modified_date</td>
+<td>string</td>
+<td>Date of last modification of Exchange Account in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+</tbody></table>
+
+<h2 id="field">Field</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>field_name</td>
+<td>string</td>
+<td>Field Name</td>
+</tr>
+<tr>
+<td>field_type</td>
+<td>string</td>
+<td><a href="#field-type">Type of Data</a> expected in Field</td>
+</tr>
+<tr>
+<td>field_requirement</td>
+<td>boolean</td>
+<td>Boolean that defines if field is mandatory - <code class="prettyprint">true</code> or optional - <code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>field_validation_regex</td>
+<td>string</td>
+<td>Regex used for field validation</td>
+</tr>
+</tbody></table>
+
+<h2 id="kyc">KYC</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>kyc_level</td>
+<td>string</td>
+<td>Level of clearance kyc information provides</td>
+</tr>
+<tr>
+<td>dob</td>
+<td>string</td>
+<td>Date of birth in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>Address</td>
+</tr>
+<tr>
+<td>address_2</td>
+<td>string</td>
+<td>Additional address information</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+<td>City</td>
+</tr>
+<tr>
+<td>state_province</td>
+<td>string</td>
+<td>State or Province</td>
+</tr>
+<tr>
+<td>postal_code</td>
+<td>string</td>
+<td>Postal code</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+<td>Country in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a></td>
+</tr>
+<tr>
+<td>documents</td>
+<td>array</td>
+<td>Array containing <a href="#document">Document</a> objects</td>
+</tr>
+<tr>
+<td>ssn_itin</td>
+<td>string</td>
+<td>Social Security or Individual Tax Identification Number</td>
+</tr>
+</tbody></table>
+
+<h2 id="limit-order">Limit Order</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_id</td>
+<td>string</td>
+<td>Unique identifier of order</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>string</td>
+<td>Created date of Limit Order in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>modified_date</td>
+<td>string</td>
+<td>Date of last modification of Limit Order in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>order_type</td>
+<td>string</td>
+<td>Type of Order.  Options are <code class="prettyprint">BUY</code> or <code class="prettyprint">SELL</code></td>
+</tr>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>Order Currency in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> format</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>string</td>
+<td>Amount of currency</td>
+</tr>
+<tr>
+<td>price</td>
+<td>string</td>
+<td>Price per Unit</td>
+</tr>
+<tr>
+<td>unfilled_amount</td>
+<td>string</td>
+<td>Amount of order that remains unfilled</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td><a href="#limit-order-status">Status of limit order</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="new-account">New Account</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>first_name</td>
+<td>string</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>middle_name</td>
+<td>string</td>
+<td>Middle name</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>string</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>second_last_name</td>
+<td>string</td>
+<td>Second Last Name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>Email</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>string</td>
+<td>Phone number</td>
+</tr>
+<tr>
+<td>mfa_input</td>
+<td>string</td>
+<td>Multi-Factor Authentication field</td>
+</tr>
+</tbody></table>
+
+<h2 id="orderbook">OrderBook</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>asks</td>
+<td>array</td>
+<td>An array of <a href="#book">Books</a></td>
+</tr>
+<tr>
+<td>bids</td>
+<td>array</td>
+<td>An array of <a href="#book">Books</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="quote">Quote</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>btc_amount</td>
+<td>string</td>
+<td>Amount of BTC to be exchanged</td>
+</tr>
+<tr>
+<td>fiat_amount</td>
+<td>string</td>
+<td>Amount of Fiat to be received</td>
+</tr>
+<tr>
+<td>expiration_date_time</td>
+<td>string</td>
+<td>Date and Time of quote expiration in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+</tbody></table>
+
+<h2 id="transaction">Transaction</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>uid</td>
+<td>string</td>
+<td>Unique Identifier of Transaction</td>
+</tr>
+<tr>
+<td>transaction_type</td>
+<td>string</td>
+<td><a href="#transaction-type">Type of Transaction</a></td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td><a href="#transaction-status">Status of Transaction</a></td>
+</tr>
+<tr>
+<td>currency</td>
+<td>string</td>
+<td>Currency of transaction in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> format</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>string</td>
+<td>Amount of transaction</td>
+</tr>
+<tr>
+<td>created_date</td>
+<td>string</td>
+<td>Created date of transaction in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>modified_date</td>
+<td>string</td>
+<td>Date of last modification on transaction in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>destination_btc_address</td>
+<td>string</td>
+<td>Destination BTC Address</td>
+</tr>
+<tr>
+<td>originating_btc_address</td>
+<td>string</td>
+<td>Originating BTC Address</td>
+</tr>
+<tr>
+<td>related_transaction</td>
+<td>string</td>
+<td>UID of related transactions.  For example if the Transaction is Buy BTC, we might have here the UID of the Deposit Fiat transaction.  If Transaction is Buy Fiat, we would have the UID of the Deposit BTC transaction.</td>
+</tr>
+<tr>
+<td>limit_order_id</td>
+<td>string</td>
+<td>ID of limit order</td>
+</tr>
+</tbody></table>
+
+<h1 id="constants">Constants</h1>
+
+<h2 id="account-status">Account Status</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Pending</td>
+</tr>
+<tr>
+<td>002</td>
+<td>KYC Required</td>
+</tr>
+<tr>
+<td>003</td>
+<td>MFA Required</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Active</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Closed</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Do you want to build a snowman?</td>
+</tr>
+</tbody></table>
+
+<h2 id="account-type">Account Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Account Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Checkings</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Savings</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Checkings and Savings</td>
+</tr>
+</tbody></table>
+
+<h2 id="document-type">Document Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Driver&rsquo;s License</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Passport</td>
+</tr>
+<tr>
+<td>003</td>
+<td>ID Card</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Military ID</td>
+</tr>
+</tbody></table>
+
+<h2 id="field-type">Field Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>string</td>
+</tr>
+<tr>
+<td>002</td>
+<td>int</td>
+</tr>
+<tr>
+<td>003</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>004</td>
+<td>file</td>
+</tr>
+</tbody></table>
+
+<h2 id="limit-order-status">Limit Order Status</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>open</td>
+</tr>
+<tr>
+<td>002</td>
+<td>processing</td>
+</tr>
+<tr>
+<td>003</td>
+<td>fulfilled</td>
+</tr>
+</tbody></table>
+
+<h2 id="transaction-status">Transaction Status</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Initiated</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Completed</td>
+</tr>
+<tr>
+<td>003</td>
+<td>On Hold</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Done</td>
+</tr>
+</tbody></table>
+
+<h2 id="transaction-type">Transaction Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Field Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Deposit Fiat</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Buy BTC</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Withdrawal BTC</td>
+</tr>
+<tr>
+<td>004</td>
+<td>Deposit BTC</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Buy Fiat</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Withdrawal Fiat</td>
 </tr>
 </tbody></table>
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
+<p>The Exchange API uses the following codes in the <a href="#error-object">Error Object</a>:</p>
 
 <table><thead>
 <tr>
@@ -290,58 +2099,99 @@ Remember — a happy kitten is an authenticated kitten!
 </tr>
 </thead><tbody>
 <tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
+<td>0101</td>
+<td>Authentication Error</td>
 </tr>
 <tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
+<td>0102</td>
+<td>Unknown System Error</td>
 </tr>
 <tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
+<td>0103</td>
+<td>Service temporarily unavailable</td>
 </tr>
 <tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>0104</td>
+<td>Operation not allowed</td>
 </tr>
 <tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+<td>0201</td>
+<td>Exchange Account is Frozen</td>
 </tr>
 <tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
+<td>0202</td>
+<td>Exchange Account over accumulative limit for <day, week, month, year></td>
 </tr>
 <tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
+<td>0203</td>
+<td>Transaction Amount over limit</td>
 </tr>
 <tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
+<td>0301</td>
+<td>Mandatory parameter missing: <parameter name></td>
 </tr>
 <tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
+<td>0302</td>
+<td>Invalid value for parameter: <parameter name></td>
 </tr>
 <tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
+<td>0303</td>
+<td>Invalid value for query parameter: <parameter name></td>
 </tr>
 <tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>0304</td>
+<td>Invalid Account ID</td>
+</tr>
+<tr>
+<td>0305</td>
+<td>Invalid Limit Order ID</td>
+</tr>
+<tr>
+<td>0306</td>
+<td>Invalid Transaction ID</td>
+</tr>
+<tr>
+<td>0307</td>
+<td>Document does not exist</td>
+</tr>
+<tr>
+<td>0308</td>
+<td>Transaction ID already used</td>
+</tr>
+<tr>
+<td>0309</td>
+<td>File Type not allowed</td>
+</tr>
+<tr>
+<td>0310</td>
+<td>File too large</td>
+</tr>
+<tr>
+<td>0401</td>
+<td>Account already exists</td>
+</tr>
+<tr>
+<td>0402</td>
+<td>Document already exists</td>
+</tr>
+<tr>
+<td>0403</td>
+<td>Limit Order already exists</td>
+</tr>
+<tr>
+<td>0404</td>
+<td>Transaction already exists</td>
 </tr>
 </tbody></table>
 
+<aside class="notice"><br>
+Error codes beginning with <code>01**</code> are General Errors<br>
+Error codes beginning with <code>02**</code> are Exchange Account Errors<br>
+Error codes beginning with <code>03**</code> are Invalid Data Errors<br>
+Error codes beginning with <code>04**</code> are Duplicate Errors</aside>
+
       </div>
       <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-          </div>
       </div>
     </div>
   </body>
