@@ -1,20 +1,52 @@
 # Errors
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files...just save them to the `includes` folder and add them to the top of your `index.md`'s frontmatter. Files are included in the order listed.</aside>
-
-The Kittn API uses the following error codes:
+The Exchange API uses the following codes in the [Error Object](#error-object):
 
 
 Error Code | Meaning
 ---------- | -------
-400 | Bad Request -- Your request sucks
-401 | Unauthorized -- Your API key is wrong
-403 | Forbidden -- The kitten requested is hidden for administrators only
-404 | Not Found -- The specified kitten could not be found
-405 | Method Not Allowed -- You tried to access a kitten with an invalid method
-406 | Not Acceptable -- You requested a format that isn't json
-410 | Gone -- The kitten requested has been removed from our servers
-418 | I'm a teapot
-429 | Too Many Requests -- You're requesting too many kittens! Slow down!
-500 | Internal Server Error -- We had a problem with our server. Try again later.
-503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
+0101 | Authentication Error
+0102 | Unknown System Error
+0103 | Service temporarily unavailable
+0104 | Operation not allowed
+0201 | Exchange Account is Frozen
+0202 | Exchange Account over accumulative limit for <day, week, month, year>
+0203 | Transaction Amount over limit
+0301 | Mandatory parameter missing: <parameter name>
+0302 | Invalid value for parameter: <parameter name>
+0303 | Invalid value for query parameter: <parameter name>
+0304 | Invalid Account ID
+0305 | Invalid Limit Order ID
+0306 | Invalid Transaction ID
+0307 | Document does not exist
+0308 | Transaction ID already used
+0309 | File Type not allowed
+0310 | File too large
+0401 | Account already exists
+0402 | Document already exists
+0403 | Limit Order already exists
+0404 | Transaction already exists
+
+<aside class="notice"><br>
+Error codes beginning with <code>01**</code> are General Errors<br>
+Error codes beginning with <code>02**</code> are Exchange Account Errors<br>
+Error codes beginning with <code>03**</code> are Invalid Data Errors<br>
+Error codes beginning with <code>04**</code> are Duplicate Errors</aside>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

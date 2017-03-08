@@ -23,7 +23,7 @@ under the License.
     <title><%= current_page.data.title || "API Documentation" %></title>
 
     <style>
-      <%= Rouge::Themes::MonokaiSublime.render(:scope => '.highlight') %>
+      <%= Rouge::Themes::Base16::Monokai.render(:scope => '.highlight') %>
     </style>
     <%= stylesheet_link_tag :screen, media: :screen %>
     <%= stylesheet_link_tag :print, media: :print %>
@@ -41,8 +41,10 @@ under the License.
         <%= image_tag('navbar.png') %>
       </span>
     </a>
-    <div class="tocify-wrapper">
+    <div class="tocify-wrapper" align='middle'>
+     <div class="content" tyle="margin: 0 auto; left: 50%;">
       <%= image_tag "logo.png" %>
+      </div>
       <% if language_tabs.any? %>
         <div class="lang-selector">
           <% language_tabs.each do |lang| %>
