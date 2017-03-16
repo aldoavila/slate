@@ -16,6 +16,24 @@ Parameter | Type | Description
 start_time | string | Start time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime format
 end_time | string | End time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime format
 
+## Company
+Parameter | Type | Description
+--------- | ------- | -----------
+name | string | The name of the Company
+code | string | Code used by exchange to identify Company
+payment methods | array | Array of [Payment Methods](#payment-method) available 
+country | string | Country of Company in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format
+processing_hours | array | The processing hours for the Company.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
+deposit_fee | string | Fee applied by Company for deposit
+withdraw_fee | string |Fee applied by Company for withdraw
+exchange_deposit_fee | string | Fee applied by Exchange for using Company to deposit
+exchange_withdraw_fee | string | Fee applied by Exchange for using Company to withdraw
+branding | string | If brand is different from Company
+notes | string | Specific notes on how to Deposit at Company
+account_types | string | [Account types](#account-type) available at Company
+account_validation_regex | string | Regex used for account validation
+holidays | array | Array of Holiday Dates in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
+        
 ## Document
 Parameter | Type | Description
 --------- | ------- | -----------
@@ -64,24 +82,6 @@ field_type| string | [Type of Data] (#field-type) expected in Field
 field_required | boolean | Boolean that defines if field is mandatory - `true` or optional - `false`
 field_validation_regex | string | Regex used for field validation
 
-## Company
-Parameter | Type | Description
---------- | ------- | -----------
-name | string | The name of the Company
-code | string | Code used by exchange to identify Company
-payment methods | array | Array of [Payment Methods](#payment-method) available 
-country | string | Country of Company in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format
-processing_hours | array | The processing hours for the Company.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
-deposit_fee | string | Fee applied by Company for deposit
-withdraw_fee | string |Fee applied by Company for withdraw
-exchange_deposit_fee | string | Fee applied by Exchange for using Company to deposit
-exchange_withdraw_fee | string | Fee applied by Exchange for using Company to withdraw
-branding | string | If brand is different from Company
-notes | string | Specific notes on how to Deposit at Company
-account_types | string | [Account types](#account-type) available at Company
-account_validation_regex | string | Regex used for account validation
-holidays | array | Array of Holiday Dates in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
-        
 ## KYC
 Parameter | Type | Description
 --------- | ------- | -----------
