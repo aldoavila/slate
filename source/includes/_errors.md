@@ -18,10 +18,11 @@ Error Code | Meaning
 0304 | Invalid Account ID
 0305 | Invalid Limit Order ID
 0306 | Invalid Transaction ID
-0307 | Document does not exist
-0308 | Transaction ID already used
-0309 | File Type not allowed
-0310 | File too large
+0307 | Invalid Notification ID
+0308 | Document does not exist
+0309 | Transaction ID already used
+0310 | File Type not allowed
+0311 | File too large
 0401 | Account already exists
 0402 | Document already exists
 0403 | Limit Order already exists

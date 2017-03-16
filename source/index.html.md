@@ -34,17 +34,55 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 The Nonce is the same as the one used in the Authorization.  The HTTPS Method and the Request Path
  should match the request.  The JSON payload must also be the same as the one used in the request.
 
+
+
 # Account Management
 
-## Get Banks
-Get list of Banks that exchange works with
+## Get Payment Methods  
+Get Payment Methods available through Exchange. 
 ### HTTPS Request
-`GET http://goabra.com/v1/banks`
+`GET https://goabra.com/v1/payment_methods`
 ### Response
 HTTP Status Code |  Message | Response Object
 -----------------|----------|----------------
-200 | Successful Response | [Bank](#bank)
+200 | Successful Response | Array of [Payment Methods](#payment-method)
 400 | Invalid Data | [Error Object](#error-object)
+401 | Unauthorized | [Error Object](#error-object)
+403 | Forbidden | [Error Object](#error-object)
+
+
+## Get Companies
+Get the Companies that have the Payment Method selected.
+These could be Banks, Store Franchises, ATM Brands, etc.
+### HTTPS Request
+`GET https://goabra.com/v1/payment_methods/<PM>/companies`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+PM | path | string | Code that pertains to Payment Method selected
+### Response
+HTTP Status Code |  Message | Response Object
+-----------------|----------|----------------
+200 | Successful Response | Array of [Companies](#company)
+400 | Invalid Payment Method | [Error Object](#error-object)
+401 | Unauthorized | [Error Object](#error-object)
+403 | Forbidden | [Error Object](#error-object)
+
+
+## Get Locations
+Get a list of Locations for the Company that has the Payment Method selected.
+### HTTPS Request
+`GET https://goabra.com/v1/payment_methods/<PM>/companies/<Code>/locations`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+PM | path | string | Code that pertains to Payment Method
+Code | path | string | Company code
+### Response
+HTTP Status Code |  Message | Response Object
+-----------------|----------|----------------
+200 | Successful Response | Array of [Locations](#location)
+400 | Invalid Payment Method | [Error Object](#error-object)
 401 | Unauthorized | [Error Object](#error-object)
 403 | Forbidden | [Error Object](#error-object)
 
@@ -52,7 +90,7 @@ HTTP Status Code |  Message | Response Object
 ## Get Required Fields 
 List of fields required for KYC verification
 ### HTTPS Request
-`GET http://goabra.com/v1/kyc_required_fields`
+`GET https://goabra.com/v1/kyc_required_fields`
 ### Response
 HTTP Status Code |  Message | Response Object
 -----------------|----------|----------------
@@ -65,7 +103,7 @@ HTTP Status Code |  Message | Response Object
 ## Post Account
 Create a new Exchange Account for User
 ### HTTPS Request
-`POST http://goabra.com/v1/accounts`
+`POST https://goabra.com/v1/accounts`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -82,7 +120,7 @@ HTTP Status Code |  Message | Response Object
 ## Get Account
 Retrieve information for a specific Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>`
+`GET https://goabra.com/v1/accounts/<ID>`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -99,7 +137,7 @@ HTTP Status Code |  Message | Response Object
 ## Patch Account
 Modify data of the User's Exchange Account
 ### HTTPS Request
-`PATCH http://goabra.com/v1/accounts/<ID>`
+`PATCH https://goabra.com/v1/accounts/<ID>`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -117,7 +155,7 @@ HTTP Status Code |  Message | Response Object
 ## Get KYC  
 Retrieve KYC information for Exchange Account  
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/kyc`
+`GET https://goabra.com/v1/accounts/<ID>/kyc`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -134,7 +172,7 @@ HTTP Status Code |  Message | Response Object
 ## Patch KYC  
 Add KYC information for the Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/kyc`
+`GET https://goabra.com/v1/accounts/<ID>/kyc`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -152,7 +190,7 @@ HTTP Status Code |  Message | Response Object
 ## Get KYC Documents
 Returns array of KYC documents stored for an Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/kyc/documents`
+`GET https://goabra.com/v1/accounts/<ID>/kyc/documents`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -169,7 +207,7 @@ HTTP Status Code |  Message | Response Object
 ## Post KYC Document
 Add a KYC Document to an Exchange Account
 ### HTTPS Request
-`POST http://goabra.com/v1/accounts/<ID>/kyc/documents`
+`POST https://goabra.com/v1/accounts/<ID>/kyc/documents`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -187,7 +225,7 @@ HTTP Status Code |  Message | Response Object
 ## Delete KYC Document
 Remove a KYC Document from an Exchange Account
 ### HTTPS Request
-`DELETE http://goabra.com/v1/accounts/<ID>/kyc/documents/?document_type=001`
+`DELETE https://goabra.com/v1/accounts/<ID>/kyc/documents/?document_type=001`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -202,14 +240,14 @@ HTTP Status Code |  Message | Response Object
 403 | Forbidden | [Error Object](#error-object)
 404 | KYC Document Not Found | [Error Object](#error-object)
 
-
+ 
 
 # Orders
 
 ## Get Transfer Quote
 Receive Exchange Rate for Fiat Purchase
 ### HTTPS Request
-`GET http://goabra.com/v1/transfer_quote`
+`GET https://goabra.com/v1/transfer_quote`
 ### Response
 HTTP Status Code |  Message | Response Object
 -----------------|----------|----------------
@@ -222,7 +260,11 @@ HTTP Status Code |  Message | Response Object
 ## Get Order Books
 Receive order books
 ### HTTPS Request
-`GET http://goabra.com/v1/order_books`
+`GET https://goabra.com/v1/order_books/?amount=10`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+amount | query | string | Number of Orders returned
 ### Response
 HTTP Status Code |  Message | Response Object
 -----------------|----------|----------------
@@ -235,7 +277,7 @@ HTTP Status Code |  Message | Response Object
 ## Get Limit Orders
 Retrieve Limit Orders for Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/limit_orders`
+`GET https://goabra.com/v1/accounts/<ID>/limit_orders`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -252,7 +294,7 @@ HTTP Status Code |  Message | Response Object
 ## Post Limit Order
 Create a new Limit Order for the Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/limit_orders`
+`GET https://goabra.com/v1/accounts/<ID>/limit_orders`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -270,7 +312,7 @@ HTTP Status Code |  Message | Response Object
 ## Patch Limit Order
 Make change to Limit Order for Exchange Account
 ### HTTPS Request
-`PATCH http://goabra.com/v1/accounts/<ID>/limit_orders/<orderID>`
+`PATCH https://goabra.com/v1/accounts/<ID>/limit_orders/<orderID>`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -289,7 +331,7 @@ HTTP Status Code |  Message | Response Object
 ## Delete Limit Order
 Delete Limit Order for Exchange Account
 ### HTTPS Request
-`DELETE http://goabra.com/v1/accounts/<ID>/limit_orders/<orderID>`
+`DELETE https://goabra.com/v1/accounts/<ID>/limit_orders/<orderID>`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -310,7 +352,7 @@ HTTP Status Code |  Message | Response Object
 ## Get BTC Address
 Retrieves a BTC Address that can be used to send BTC to User's Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/btc_address`
+`GET https://goabra.com/v1/accounts/<ID>/btc_address`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -327,7 +369,7 @@ HTTP Status Code |  Message | Response Object
 ## Get Transactions
 Retrieve Transactions for Exchange Account that match query parameters
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/transactions/?txtype=001&txstatus=002`
+`GET https://goabra.com/v1/accounts/<ID>/transactions/?txtype=001&txstatus=002`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -347,7 +389,7 @@ HTTP Status Code |  Message | Response Object
 ## Post Transaction
 Create a new Transaction for the Exchange Account
 ### HTTPS Request
-`POST http://goabra.com/v1/accounts/<ID>/transactions/`
+`POST https://goabra.com/v1/accounts/<ID>/transactions`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -365,7 +407,7 @@ HTTP Status Code |  Message | Response Object
 ## Get Transaction
 Retrieve Transaction for Exchange Account
 ### HTTPS Request
-`GET http://goabra.com/v1/accounts/<ID>/transactions/<txid>`
+`GET https://goabra.com/v1/accounts/<ID>/transactions/<txid>`
 ### Parameters
 Name | location | type | Request Object
 -----|----------|------|---------------
@@ -379,3 +421,40 @@ HTTP Status Code |  Message | Response Object
 401 | Unauthorized | [Error Object](#error-object)
 403 | Forbidden | [Error Object](#error-object)
 404 | No Transaction Found | [Error Object](#error-object)          
+
+
+
+# Notifications
+
+## Get Notifications
+Retrieves Notifications from Exchange
+### HTTPS Request
+`GET https://goabra.com/v1/notifications/?amount=10`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+amount | query | string | Number of notifications fetched
+### Response
+HTTP Status Code |  Message | Response Object
+-----------------|----------|----------------
+200 | Successful Response | Array of [Notifications](#notification)
+400 | Invalid data | [Error Object](#error-object)
+401 | Unauthorized | [Error Object](#error-object)
+403 | Forbidden | [Error Object](#error-object) 
+  
+
+## Delete Notification
+Confirm Notification that has been processed by deleting it
+### HTTPS Request
+`DELETE https://goabra.com/v1/notifications/<ID>`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+id | path | string | Notification ID
+### Response
+HTTP Status Code |  Message | Response Object
+-----------------|----------|----------------
+200 | Notification Confirmed | None
+400 | Invalid Notification ID | [Error Object](#error-object)
+401 | Unauthorized | [Error Object](#error-object)
+403 | Forbidden | [Error Object](#error-object)

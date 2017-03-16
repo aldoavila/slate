@@ -1,53 +1,39 @@
 # Definitions
 <aside class="notice">The Definitions section defines the objects that are used throughout the REST API</aside>
 
-
-
-## Bank
-Parameter | Type | Description
---------- | ------- | -----------
-bank_name | string | The name of the Bank
-bank_code | string | Code used by exchange to identify Bank
-country | string | Country of Bank in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-processing_hours | array | The processing hours for the Bank.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
-branch_hours | array |The processing hours for the Bank.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
-online_banking | boolean | Boolean that states if online banking is available
-deposit_fee | string | Fee applied by bank for deposit
-withdrawal_fee | string |Fee applied by bank for withdrawal
-account_types | string | [Account types](#account-type) available at bank
-account_validation_regex | string | Regex used for account validation
-
-##Book
+## Book
 Parameter | Type | Description
 --------- | ------- | -----------
 order_book | string | Name of Order Book
 price | string | Price per unit
 amount | string  | Amount in order
 created_date | string | Date of Book creation in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
+queue_position | string | How close this particular book is to the top of the queue
 
-##Business Hours
+## Business Hours
 Parameter | Type | Description
 --------- | ------- | -----------
 start_time | string | Start time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime format
 end_time | string | End time in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime format
 
-##Document
+## Document
 Parameter | Type | Description
 --------- | ------- | -----------
-name | string | "Name of Document"
+name | string | Name of Document
 document_type | string | [Type of Document](#document-type)
 file_type | string | Options available are `.jpeg`, `pdf` or `png`
 file | string | Base64 encoded binary file
 document_id_number | string | Identifier number of Document
 name_on_doc | string | Name on document
+expiration_date | string | Expiration date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
 
-##Error Object
+## Error Object
 Parameter | Type | Description
 --------- | ------- | -----------
 error_code | string | Error Code
 error_message | string | Error Message
 
-##Exchange Account
+## Exchange Account
 Parameter | Type | Description
 --------- | ------- | -----------
 id | string | Account ID at Exchange
@@ -65,23 +51,45 @@ kyc | object | [KYC](#kyc)
 bank | string | Bank Code
 fiat_balance | string | Fiat balance amount
 btc_balance | string | Bitcoin balance amount
-fiat_account_number | string | Account number that receives Fiat amounts during Abra Deposit flow"
+fiat_account_number | string | Account number that receives Fiat amounts during Abra Deposit flow
 fiat_account_type | string | [Type of Account](#account-type)
 created_date | string | Created date of Exchange Account in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
 modified_date | string | Date of last modification of Exchange Account in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
 
-##Field
+## Field
 Parameter | Type | Description
 --------- | ------- | -----------
 field_name| string | Field Name
 field_type| string | [Type of Data] (#field-type) expected in Field
-field_requirement | boolean | Boolean that defines if field is mandatory - `true` or optional - `false`
+field_required | boolean | Boolean that defines if field is mandatory - `true` or optional - `false`
 field_validation_regex | string | Regex used for field validation
+
+## Company
+Parameter | Type | Description
+--------- | ------- | -----------
+name | string | The name of the Company
+code | string | Code used by exchange to identify Company
+payment methods | array | Array of [Payment Methods](#payment-method) available 
+country | string | Country of Company in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format
+processing_hours | array | The processing hours for the Company.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
+deposit_fee | string | Fee applied by Company for deposit
+withdraw_fee | string |Fee applied by Company for withdraw
+exchange_deposit_fee | string | Fee applied by Exchange for using Company to deposit
+exchange_withdraw_fee | string | Fee applied by Exchange for using Company to withdraw
+branding | string | If brand is different from Company
+notes | string | Specific notes on how to Deposit at Company
+account_types | string | [Account types](#account-type) available at Company
+account_validation_regex | string | Regex used for account validation
+holidays | array | Array of Holiday Dates in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
         
-##KYC
+## KYC
 Parameter | Type | Description
 --------- | ------- | -----------
 kyc_level | string | Level of clearance kyc information provides
+tx_limit | string | Transaction amount limit
+daily_limit | string | Transaction limit for the day
+weekly_limit | string | Transaction limit for the week
+monthly_limit | string | Transaction limit for the month
 dob | string | Date of birth in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
 address | string | Address
 address_2 | string | Additional address information
@@ -92,7 +100,7 @@ country | string | Country in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki
 documents | array | Array containing [Document](#document) objects
 ssn_itin | string | Social Security or Individual Tax Identification Number
 
-##Limit Order
+## Limit Order
 Parameter | Type | Description
 --------- | ------- | -----------
 order_id | string | Unique identifier of order
@@ -105,7 +113,25 @@ price | string | Price per Unit
 unfilled_amount | string | Amount of order that remains unfilled
 status | string |[Status of limit order](#limit-order-status)
 
-##New Account
+## Location
+Parameter | Type | Description
+--------- | ------- | -----------
+name | string | The name of the Location
+code | string | Code used by exchange to identify Location
+payment methods | Array | Array of [Payment Methods](#payment-method) available 
+address | string | Address
+address_2 | string | Additional address information
+city | string | City
+state_province | string | State or Province
+postal_code | string | Postal code
+country | string | Country of Location in [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements) format
+gps_coordinates | string | GPS Coordinates of Location
+phone_number | string | Phone Number
+business_hours | array | Location's hours of operation.  This is an array of 7 [Business Hours](#business-hours) entries.  Each entry represents a day of the week starting with Sunday.
+branding | string | If brand is different from Location
+notes | string | Specific notes on how to Deposit at Location
+
+## New Account
 Parameter | Type | Description
 --------- | ------- | -----------
 first_name | string | First name
@@ -116,24 +142,37 @@ email | string | Email
 phone_number | string | Phone number
 mfa_input | string | Multi-Factor Authentication field
 
-##OrderBook
+## Notification
+Parameter | Type | Description
+--------- | ------- | -----------
+notification_id | string | Identifier number for notification
+notification_type | string | [Type of Notification](#notification-type)
+identifier | string | Depending on notification_type this is the Identifier of either Account, Order or Transaction
+new_status | string | Depending on notification_type this is either an [Account_status](#account-status), [Limit Order Status](#limit-order-status) or a [Transaction Status](#transaction-status)
+message | string | Message regarding new status
+
+## Order Book
 Parameter | Type | Description
 --------- | ------- | -----------
 asks | array | An array of [Books](#book)
 bids | array | An array of [Books](#book)
 
-##Quote
+## Quote
 Parameter | Type | Description
 --------- | ------- | -----------
 btc_amount | string | Amount of BTC to be exchanged
 fiat_amount | string |  Amount of Fiat to be received
 expiration_date_time | string | Date and Time of quote expiration in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format
 
-##Transaction
+## Transaction
 Parameter | Type | Description
 --------- | ------- | -----------
-uid | string | Unique Identifier of Transaction
+tx_id | string | Identifier of Transaction.
+tx_id_type | string | [Transaction ID type](#transaction-id-type) 
 transaction_type | string |[Type of Transaction](#transaction-type)
+account_id | string | ID of Exchange Account
+company_code | string | Company Code
+location_code | string | Location Code
 status | string | [Status of Transaction](#transaction-status)
 currency | string | Currency of transaction in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) format
 amount | string | Amount of transaction
@@ -144,9 +183,12 @@ originating_btc_address | string | Originating BTC Address
 related_transaction | string | UID of related transactions.  For example if the Transaction is Buy BTC, we might have here the UID of the Deposit Fiat transaction.  If Transaction is Buy Fiat, we would have the UID of the Deposit BTC transaction.
 limit_order_id | string | ID of limit order
 
-#Constants
-##Account Status
-Code | Field Type 
+
+
+# Constants
+
+## Account Status
+Code | Account Status 
 ---- | ------- 
 001 | Pending
 002 | KYC Required
@@ -154,23 +196,26 @@ Code | Field Type
 004 | Active
 005 | Closed
 006 | Do you want to build a snowman?
+007 | Rejected
 
 ## Account Type
 Code | Account Type 
 ---- | ------- 
-001 | Checkings
+001 | Checking
 002 | Savings
-003 | Checkings and Savings
+003 | Checking and Savings
 
-##Document Type
-Code | Field Type 
+## Document Type
+Code | Document Type 
 ---- | ------- 
 001 | Driver's License
-002 |  Passport
+002 | Passport
 003 | ID Card
 004 | Military ID
+005 | Proof of Address
+006 | Selfie
 
-##Field Type
+## Field Type
 Code | Field Type 
 ---- | ------- 
 001 | string
@@ -178,27 +223,50 @@ Code | Field Type
 003 | boolean
 004 | file
 
-##Limit Order Status
-Code | Field Type 
+## Limit Order Status
+Code | Limit Order Type 
 ---- | ------- 
 001 | open
 002 | processing
 003 | fulfilled
 
-##Transaction Status
-Code | Field Type
+## Notification Type
+Code | Notification Type
+---- | -------
+001 | Account
+002 | Limit Order
+003 | Transaction
+
+## Payment Method
+Code | Payment Method
+---- | -------
+001 | Bank Account
+002 | Cash
+003 | ATM
+
+## Transaction ID Type
+Code | Transaction ID Type
+---- | -------
+001 | Number
+002 | Barcode
+003 | QR Code
+004 | SMS Pin
+
+## Transaction Status
+Code | Transaction Status
 ---- | -------
 001 | Initiated
 002 | Completed
 003 | On Hold
 004 | Done
+005 | Cancelled
 
-##Transaction Type
-Code | Field Type 
+## Transaction Type
+Code | Transaction Type 
 ---- | -------
 001 | Deposit Fiat
 002 | Buy BTC
 003 | Withdrawal BTC
 004 | Deposit BTC
-005 | Buy Fiat
+005 | Sell BTC
 006 | Withdrawal Fiat
