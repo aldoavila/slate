@@ -144,13 +144,13 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h1 id="account-management">Account Management</h1>
 
-<h2 id="get-banks">Get Banks</h2>
+<h2 id="get-payment-methods">Get Payment Methods</h2>
 
-<p>Get list of Banks that exchange works with</p>
+<p>Get Payment Methods available through Exchange. </p>
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/banks</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/payment_methods</code></p>
 
 <h3 id="response">Response</h3>
 
@@ -164,11 +164,132 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <tr>
 <td>200</td>
 <td>Successful Response</td>
-<td><a href="#bank">Bank</a></td>
+<td>Array of <a href="#payment-method">Payment Methods</a></td>
 </tr>
 <tr>
 <td>400</td>
 <td>Invalid Data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-companies">Get Companies</h2>
+
+<p>Get the Companies that have the Payment Method selected.
+These could be Banks, Store Franchises, ATM Brands, etc.</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET https://goabra.com/v1/payment_methods/&lt;PM&gt;/companies</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PM</td>
+<td>path</td>
+<td>string</td>
+<td>Code that pertains to Payment Method selected</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>Array of <a href="#company">Companies</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Payment Method</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-locations">Get Locations</h2>
+
+<p>Get a list of Locations for the Company that has the Payment Method selected.</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET https://goabra.com/v1/payment_methods/&lt;PM&gt;/companies/&lt;Code&gt;/locations</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>PM</td>
+<td>path</td>
+<td>string</td>
+<td>Code that pertains to Payment Method</td>
+</tr>
+<tr>
+<td>Code</td>
+<td>path</td>
+<td>string</td>
+<td>Company code</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>Array of <a href="#location">Locations</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Payment Method</td>
 <td><a href="#error-object">Error Object</a></td>
 </tr>
 <tr>
@@ -189,7 +310,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/kyc_required_fields</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/kyc_required_fields</code></p>
 
 <h3 id="response">Response</h3>
 
@@ -228,7 +349,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">POST http://goabra.com/v1/accounts</code></p>
+<p><code class="prettyprint">POST https://goabra.com/v1/accounts</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -285,7 +406,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -342,7 +463,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">PATCH http://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
+<p><code class="prettyprint">PATCH https://goabra.com/v1/accounts/&lt;ID&gt;</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -405,7 +526,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -462,7 +583,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -525,7 +646,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -582,7 +703,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">POST http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
+<p><code class="prettyprint">POST https://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -645,7 +766,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">DELETE http://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents/?document_type=001</code></p>
+<p><code class="prettyprint">DELETE https://goabra.com/v1/accounts/&lt;ID&gt;/kyc/documents/?document_type=001</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -715,7 +836,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/transfer_quote</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/transfer_quote</code></p>
 
 <h3 id="response">Response</h3>
 
@@ -754,7 +875,25 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/order_books</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/order_books/?amount=10</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>amount</td>
+<td>query</td>
+<td>string</td>
+<td>Number of Orders returned</td>
+</tr>
+</tbody></table>
 
 <h3 id="response">Response</h3>
 
@@ -793,7 +932,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -850,7 +989,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -913,7 +1052,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">PATCH http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
+<p><code class="prettyprint">PATCH https://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -982,7 +1121,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">DELETE http://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
+<p><code class="prettyprint">DELETE https://goabra.com/v1/accounts/&lt;ID&gt;/limit_orders/&lt;orderID&gt;</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -1047,7 +1186,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/btc_address</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/btc_address</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -1104,7 +1243,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/?txtype=001&amp;txstatus=002</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/transactions/?txtype=001&amp;txstatus=002</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -1178,7 +1317,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">POST http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/</code></p>
+<p><code class="prettyprint">POST https://goabra.com/v1/accounts/&lt;ID&gt;/transactions</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -1241,7 +1380,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 
 <h3 id="https-request">HTTPS Request</h3>
 
-<p><code class="prettyprint">GET http://goabra.com/v1/accounts/&lt;ID&gt;/transactions/&lt;txid&gt;</code></p>
+<p><code class="prettyprint">GET https://goabra.com/v1/accounts/&lt;ID&gt;/transactions/&lt;txid&gt;</code></p>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -1303,70 +1442,125 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 </tbody></table>
 
-          <h1 id="definitions">Definitions</h1>
+<h1 id="notifications">Notifications</h1>
 
-<aside class="notice">The Definitions section defines the objects that are used throughout the REST API</aside>
+<h2 id="get-notifications">Get Notifications</h2>
 
-<h2 id="bank">Bank</h2>
+<p>Retrieves Notifications from Exchange</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">GET https://goabra.com/v1/notifications/?amount=10</code></p>
+
+<h3 id="parameters">Parameters</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>bank_name</td>
+<td>amount</td>
+<td>query</td>
 <td>string</td>
-<td>The name of the Bank</td>
-</tr>
-<tr>
-<td>bank_code</td>
-<td>string</td>
-<td>Code used by exchange to identify Bank</td>
-</tr>
-<tr>
-<td>country</td>
-<td>string</td>
-<td>Country of Bank in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a></td>
-</tr>
-<tr>
-<td>processing_hours</td>
-<td>array</td>
-<td>The processing hours for the Bank.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
-</tr>
-<tr>
-<td>branch_hours</td>
-<td>array</td>
-<td>The processing hours for the Bank.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
-</tr>
-<tr>
-<td>online_banking</td>
-<td>boolean</td>
-<td>Boolean that states if online banking is available</td>
-</tr>
-<tr>
-<td>deposit_fee</td>
-<td>string</td>
-<td>Fee applied by bank for deposit</td>
-</tr>
-<tr>
-<td>withdrawal_fee</td>
-<td>string</td>
-<td>Fee applied by bank for withdrawal</td>
-</tr>
-<tr>
-<td>account_types</td>
-<td>string</td>
-<td><a href="#account-type">Account types</a> available at bank</td>
-</tr>
-<tr>
-<td>account_validation_regex</td>
-<td>string</td>
-<td>Regex used for account validation</td>
+<td>Number of notifications fetched</td>
 </tr>
 </tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td>Array of <a href="#notification">Notifications</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid data</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-notification">Delete Notification</h2>
+
+<p>Confirm Notification that has been processed by deleting it</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">DELETE https://goabra.com/v1/notifications/&lt;ID&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>path</td>
+<td>string</td>
+<td>Notification ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Notification Confirmed</td>
+<td>None</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Notification ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+          <h1 id="definitions">Definitions</h1>
+
+<aside class="notice">The Definitions section defines the objects that are used throughout the REST API</aside>
 
 <h2 id="book">Book</h2>
 
@@ -1396,6 +1590,11 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>created_date</td>
 <td>string</td>
 <td>Date of Book creation in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
+</tr>
+<tr>
+<td>queue_position</td>
+<td>string</td>
+<td>How close this particular book is to the top of the queue</td>
 </tr>
 </tbody></table>
 
@@ -1432,7 +1631,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <tr>
 <td>name</td>
 <td>string</td>
-<td>&ldquo;Name of Document&rdquo;</td>
+<td>Name of Document</td>
 </tr>
 <tr>
 <td>document_type</td>
@@ -1458,6 +1657,11 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>name_on_doc</td>
 <td>string</td>
 <td>Name on document</td>
+</tr>
+<tr>
+<td>expiration_date</td>
+<td>string</td>
+<td>Expiration date in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
 </tr>
 </tbody></table>
 
@@ -1569,7 +1773,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <tr>
 <td>fiat_account_number</td>
 <td>string</td>
-<td>Account number that receives Fiat amounts during Abra Deposit flow&quot;</td>
+<td>Account number that receives Fiat amounts during Abra Deposit flow</td>
 </tr>
 <tr>
 <td>fiat_account_type</td>
@@ -1608,7 +1812,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td><a href="#field-type">Type of Data</a> expected in Field</td>
 </tr>
 <tr>
-<td>field_requirement</td>
+<td>field_required</td>
 <td>boolean</td>
 <td>Boolean that defines if field is mandatory - <code class="prettyprint">true</code> or optional - <code class="prettyprint">false</code></td>
 </tr>
@@ -1616,6 +1820,87 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>field_validation_regex</td>
 <td>string</td>
 <td>Regex used for field validation</td>
+</tr>
+</tbody></table>
+
+<h2 id="company">Company</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>The name of the Company</td>
+</tr>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>Code used by exchange to identify Company</td>
+</tr>
+<tr>
+<td>payment methods</td>
+<td>array</td>
+<td>Array of <a href="#payment-method">Payment Methods</a> available</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+<td>Country of Company in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a> format</td>
+</tr>
+<tr>
+<td>processing_hours</td>
+<td>array</td>
+<td>The processing hours for the Company.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
+</tr>
+<tr>
+<td>deposit_fee</td>
+<td>string</td>
+<td>Fee applied by Company for deposit</td>
+</tr>
+<tr>
+<td>withdraw_fee</td>
+<td>string</td>
+<td>Fee applied by Company for withdraw</td>
+</tr>
+<tr>
+<td>exchange_deposit_fee</td>
+<td>string</td>
+<td>Fee applied by Exchange for using Company to deposit</td>
+</tr>
+<tr>
+<td>exchange_withdraw_fee</td>
+<td>string</td>
+<td>Fee applied by Exchange for using Company to withdraw</td>
+</tr>
+<tr>
+<td>branding</td>
+<td>string</td>
+<td>If brand is different from Company</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Specific notes on how to Deposit at Company</td>
+</tr>
+<tr>
+<td>account_types</td>
+<td>string</td>
+<td><a href="#account-type">Account types</a> available at Company</td>
+</tr>
+<tr>
+<td>account_validation_regex</td>
+<td>string</td>
+<td>Regex used for account validation</td>
+</tr>
+<tr>
+<td>holidays</td>
+<td>array</td>
+<td>Array of Holiday Dates in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> format</td>
 </tr>
 </tbody></table>
 
@@ -1632,6 +1917,26 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>kyc_level</td>
 <td>string</td>
 <td>Level of clearance kyc information provides</td>
+</tr>
+<tr>
+<td>tx_limit</td>
+<td>string</td>
+<td>Transaction amount limit</td>
+</tr>
+<tr>
+<td>daily_limit</td>
+<td>string</td>
+<td>Transaction limit for the day</td>
+</tr>
+<tr>
+<td>weekly_limit</td>
+<td>string</td>
+<td>Transaction limit for the week</td>
+</tr>
+<tr>
+<td>monthly_limit</td>
+<td>string</td>
+<td>Transaction limit for the month</td>
 </tr>
 <tr>
 <td>dob</td>
@@ -1736,6 +2041,87 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 </tbody></table>
 
+<h2 id="location">Location</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>The name of the Location</td>
+</tr>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>Code used by exchange to identify Location</td>
+</tr>
+<tr>
+<td>payment methods</td>
+<td>Array</td>
+<td>Array of <a href="#payment-method">Payment Methods</a> available</td>
+</tr>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>Address</td>
+</tr>
+<tr>
+<td>address_2</td>
+<td>string</td>
+<td>Additional address information</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+<td>City</td>
+</tr>
+<tr>
+<td>state_province</td>
+<td>string</td>
+<td>State or Province</td>
+</tr>
+<tr>
+<td>postal_code</td>
+<td>string</td>
+<td>Postal code</td>
+</tr>
+<tr>
+<td>country</td>
+<td>string</td>
+<td>Country of Location in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a> format</td>
+</tr>
+<tr>
+<td>gps_coordinates</td>
+<td>string</td>
+<td>GPS Coordinates of Location</td>
+</tr>
+<tr>
+<td>phone_number</td>
+<td>string</td>
+<td>Phone Number</td>
+</tr>
+<tr>
+<td>business_hours</td>
+<td>array</td>
+<td>Location&rsquo;s hours of operation.  This is an array of 7 <a href="#business-hours">Business Hours</a> entries.  Each entry represents a day of the week starting with Sunday.</td>
+</tr>
+<tr>
+<td>branding</td>
+<td>string</td>
+<td>If brand is different from Location</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Specific notes on how to Deposit at Location</td>
+</tr>
+</tbody></table>
+
 <h2 id="new-account">New Account</h2>
 
 <table><thead>
@@ -1782,7 +2168,43 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 </tbody></table>
 
-<h2 id="orderbook">OrderBook</h2>
+<h2 id="notification">Notification</h2>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>notification_id</td>
+<td>string</td>
+<td>Identifier number for notification</td>
+</tr>
+<tr>
+<td>notification_type</td>
+<td>string</td>
+<td><a href="#notification-type">Type of Notification</a></td>
+</tr>
+<tr>
+<td>identifier</td>
+<td>string</td>
+<td>Depending on notification_type this is the Identifier of either Account, Order or Transaction</td>
+</tr>
+<tr>
+<td>new_status</td>
+<td>string</td>
+<td>Depending on notification_type this is either an <a href="#account-status">Account_status</a>, <a href="#limit-order-status">Limit Order Status</a> or a <a href="#transaction-status">Transaction Status</a></td>
+</tr>
+<tr>
+<td>message</td>
+<td>string</td>
+<td>Message regarding new status</td>
+</tr>
+</tbody></table>
+
+<h2 id="order-book">Order Book</h2>
 
 <table><thead>
 <tr>
@@ -1839,14 +2261,34 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 </thead><tbody>
 <tr>
-<td>uid</td>
+<td>tx_id</td>
 <td>string</td>
-<td>Unique Identifier of Transaction</td>
+<td>Identifier of Transaction.</td>
+</tr>
+<tr>
+<td>tx_id_type</td>
+<td>string</td>
+<td><a href="#transaction-id-type">Transaction ID type</a></td>
 </tr>
 <tr>
 <td>transaction_type</td>
 <td>string</td>
 <td><a href="#transaction-type">Type of Transaction</a></td>
+</tr>
+<tr>
+<td>account_id</td>
+<td>string</td>
+<td>ID of Exchange Account</td>
+</tr>
+<tr>
+<td>company_code</td>
+<td>string</td>
+<td>Company Code</td>
+</tr>
+<tr>
+<td>location_code</td>
+<td>string</td>
+<td>Location Code</td>
 </tr>
 <tr>
 <td>status</td>
@@ -1902,7 +2344,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <table><thead>
 <tr>
 <th>Code</th>
-<th>Field Type</th>
+<th>Account Status</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1929,6 +2371,10 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>006</td>
 <td>Do you want to build a snowman?</td>
 </tr>
+<tr>
+<td>007</td>
+<td>Rejected</td>
+</tr>
 </tbody></table>
 
 <h2 id="account-type">Account Type</h2>
@@ -1941,7 +2387,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </thead><tbody>
 <tr>
 <td>001</td>
-<td>Checkings</td>
+<td>Checking</td>
 </tr>
 <tr>
 <td>002</td>
@@ -1949,7 +2395,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 <tr>
 <td>003</td>
-<td>Checkings and Savings</td>
+<td>Checking and Savings</td>
 </tr>
 </tbody></table>
 
@@ -1958,7 +2404,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <table><thead>
 <tr>
 <th>Code</th>
-<th>Field Type</th>
+<th>Document Type</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -1976,6 +2422,14 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <tr>
 <td>004</td>
 <td>Military ID</td>
+</tr>
+<tr>
+<td>005</td>
+<td>Proof of Address</td>
+</tr>
+<tr>
+<td>006</td>
+<td>Selfie</td>
 </tr>
 </tbody></table>
 
@@ -2010,7 +2464,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <table><thead>
 <tr>
 <th>Code</th>
-<th>Field Type</th>
+<th>Limit Order Type</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -2027,12 +2481,82 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 </tbody></table>
 
+<h2 id="notification-type">Notification Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Notification Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Account</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Limit Order</td>
+</tr>
+<tr>
+<td>003</td>
+<td>Transaction</td>
+</tr>
+</tbody></table>
+
+<h2 id="payment-method">Payment Method</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Payment Method</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Bank Account</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Cash</td>
+</tr>
+<tr>
+<td>003</td>
+<td>ATM</td>
+</tr>
+</tbody></table>
+
+<h2 id="transaction-id-type">Transaction ID Type</h2>
+
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Transaction ID Type</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>001</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>002</td>
+<td>Barcode</td>
+</tr>
+<tr>
+<td>003</td>
+<td>QR Code</td>
+</tr>
+<tr>
+<td>004</td>
+<td>SMS Pin</td>
+</tr>
+</tbody></table>
+
 <h2 id="transaction-status">Transaction Status</h2>
 
 <table><thead>
 <tr>
 <th>Code</th>
-<th>Field Type</th>
+<th>Transaction Status</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -2051,6 +2575,10 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <td>004</td>
 <td>Done</td>
 </tr>
+<tr>
+<td>005</td>
+<td>Cancelled</td>
+</tr>
 </tbody></table>
 
 <h2 id="transaction-type">Transaction Type</h2>
@@ -2058,7 +2586,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 <table><thead>
 <tr>
 <th>Code</th>
-<th>Field Type</th>
+<th>Transaction Type</th>
 </tr>
 </thead><tbody>
 <tr>
@@ -2079,7 +2607,7 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 <tr>
 <td>005</td>
-<td>Buy Fiat</td>
+<td>Sell BTC</td>
 </tr>
 <tr>
 <td>006</td>
@@ -2151,18 +2679,22 @@ Json Payload are concatenated and the Secret Key is used to create the HMAC.  Th
 </tr>
 <tr>
 <td>0307</td>
-<td>Document does not exist</td>
+<td>Invalid Notification ID</td>
 </tr>
 <tr>
 <td>0308</td>
-<td>Transaction ID already used</td>
+<td>Document does not exist</td>
 </tr>
 <tr>
 <td>0309</td>
-<td>File Type not allowed</td>
+<td>Transaction ID already used</td>
 </tr>
 <tr>
 <td>0310</td>
+<td>File Type not allowed</td>
+</tr>
+<tr>
+<td>0311</td>
 <td>File too large</td>
 </tr>
 <tr>
