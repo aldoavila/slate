@@ -95,7 +95,7 @@ the previous call, then this step would be skipped, otherwise, the KYC informati
 be directed to the exchange during this step.  Another possible situation is that the 
 exchange has tiered KYC, and they don't require KYC at the lowest tier.  This step is 
 skipped in that instance as well.
-6. **[Post KYC Documents](#post-kyc-documents)** (Optional) **-** Like the previous call,
+6. **[Post KYC Document](#post-kyc-document)** (Optional) **-** Like the previous call,
 this is optional as well.  This will only be required if the KYC tier the customer is 
 aiming for requires Documents.  
 
@@ -104,9 +104,9 @@ aiming for requires Documents.
 call is used to modify the account.  Normally an account will enter one of these states
 because the User information appears wrong or more information is required.
 - **[Patch KYC](#patch-kyc) -** Same purpose as described above.
-- **[Post KYC Documents](#post-kyc-documents) -** Same purpose as above, but used only
+- **[Post KYC Document](#post-kyc-document) -** Same purpose as above, but used only
 to post new Documents.  If replacing a document is required, it needs to be deleted first.
-- **[Delete KYC Documents](#delete-kyc-documents) -** Used to delete documents that need
+- **[Delete KYC Document](#delete-kyc-document) -** Used to delete documents that need
 to be replaced.
 
 ## Withdraw

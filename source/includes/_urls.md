@@ -152,7 +152,25 @@ HTTP Status Code |  Message | Response Object
 200 | Successful Response | [KYC](#kyc)
 400 | Invalid Exchange Account ID | [Error Object](#error-object)
 401 | Unauthorized | [Error Object](#error-object)
-403 | Forbidden | [Error Object](#error-object)        
+403 | Forbidden | [Error Object](#error-object)
+        
+
+## Post KYC  
+Post KYC information for Exchange Account  
+### HTTPS Request
+`POST https://goabra.com/v1/accounts/<ID>/kyc`
+### Parameters
+Name | location | type | Request Object
+-----|----------|------|---------------
+ID | path | string | Exchange Account ID
+body | body | object| [KYC](#kyc)
+### Response
+HTTP Status Code |  Message | Response Object
+-----------------|----------|----------------
+200 | Successful Response | [KYC](#kyc)
+400 | Invalid Exchange Account ID | [Error Object](#error-object)
+401 | Unauthorized | [Error Object](#error-object)
+403 | Forbidden | [Error Object](#error-object)
 
 
 ## Patch KYC  
