@@ -112,14 +112,242 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="introduction">Introduction</h1>
+        
+          <h1 id="introduction">Introduction</h1>
 
-<p>This is a proposed API that an exchange should build in order to be compatible with the Abra Exchange
-Flow.  By building this API, integration with Abra will be faster but, even more important, the user 
-experience will continue to be excellent.  This is a direct result of updates allowing a user to, at
- any given moment, view their account or transaction status.</p>
+<p>This document is a guide for integrating with Abra.  The steps required as well 
+as the proposed API that an exchange should build are defined below.  By building 
+the API, an exchange will be compatible with the Abra Exchange Flow.  This means 
+that integration  with Abra  will be faster, but, even more important, the user 
+experience will continue to be excellent.  This is a direct result of updates 
+allowing a user to, at any given moment, view their account or transaction status.</p>
 
-<h1 id="authorization">Authorization</h1>
+<h1 id="integration-steps">Integration Steps</h1>
+
+<p>The steps defined below are those taken by Abra and the exchange to integrate
+successfully.  Depending on the integration, more or less steps may be required.</p>
+
+<ol>
+<li><strong>Introductory call -</strong> Sometimes this call will just be the business sides, but it 
+may also involve the tech teams. Tech contacts are exchanged at this point and
+if available the Exchange API is shared.</li>
+<li><strong>Abra reviews exchange API -</strong> Abra reviews the API with the purpose of verifying
+if API fits Abra&rsquo; flow.  Any functionality that is missing will be noted.</li>
+<li><strong>Tech Call -</strong> Exchange and Abra tech teams have a conversation to define
+missing functionality in API.  Exchange&rsquo;s customer communication is also
+discussed.  Sandbox credentials are also shared at this point to help with
+development and testing.</li>
+<li><strong>Exchange Development -</strong> The exchange implements the missing functionality as close 
+as close as possible to the suggested solutions defined in this API guide.  Abra
+is available for any questions.</li>
+<li><strong>Abra Development -</strong> If anything special is required by the exchange, Abra will
+develop with the availability of the exchange in case questions arise.</li>
+<li><strong>pre-certification -</strong> Exchange and Abra pre-certify the integration in the sandbox
+environment.  Any failed cases are noted.</li>
+<li><strong>Fix failure cases -</strong> Abra and the Exchange fix any cases that failed during the
+pre-certification</li>
+<li><strong>finish pre-certification -</strong> Any cases that were failing are redone to confirm that 
+they are now passing.</li>
+<li><strong>certify -</strong> Run through certification steps.  At this point any failed steps require
+the certification to be restarted from the beginning once a fix is implemented.</li>
+<li><strong>Exchange Production Credentials -</strong> The Exchange provides Abra with production 
+credentials and production permissions.  Abra does the same.</li>
+<li><strong>Deployment -</strong> Code is deployed to production and as well as any configuration
+changes</li>
+<li><strong>Production Basic Tests -</strong> A few basic tests are done in production to confirm 
+deployment was a success.</li>
+<li><strong>Activate -</strong> Once the deployment has been confirmed as successful, and Business 
+Dev. has given the ok, the Exchange is activated in Abra system in order to accept real 
+requests.</li>
+<li><strong>Monitor -</strong> Thorough monitoring is done in the first few hours of activation to confirm 
+integration is running smoothly.  Close monitoring is kept for at least 2 weeks. After that 
+enough activity should have been experienced to ease fears of potential issues.  Integration 
+now enters normal monitoring.</li>
+</ol>
+
+<h1 id="guide">Guide</h1>
+
+<p>There are four critical actions that an exchange has to provide.</p>
+
+<ul>
+<li>Account creation</li>
+<li>Deposit</li>
+<li>Withdraw</li>
+<li>Updates</li>
+</ul>
+
+<p>This guide will explain how Abra intends to use the API in order to execute the actions 
+listed above.  Each action defines the API use for the &ldquo;Happy Path&rdquo; as well as what each
+call is doing.  They will also define which API&rsquo;s will be used during error cases and
+why they are being called.</p>
+
+<h2 id="account-creation">Account Creation</h2>
+
+<p>Before a user can do withdraws and deposits, they need to have an account.  It&rsquo;s very
+important that account creation can be handled via the API so that the entire process
+can be automated.  It&rsquo;s also important that outside interaction is not required by the
+user, as the user will not necessarily know they are dealing with an exchange.  What
+this means is that email verification or two-factor authentication should not be required
+as Abra is already verifying that it&rsquo;s the user sending the request.</p>
+
+<p>A user first selects what type of endpoint they want in order for Abra to properly ask 
+the user for the information required to create transactions.  Once the user provides
+the necessary information, an account is created at the exchange.  If the Account has
+missing information more can be provided as well as documentation.</p>
+
+<h3 id="happy-path">Happy Path</h3>
+
+<ol>
+<li><strong><a href="#get-payment-methods">Get Payment Methods</a> -</strong> When a user wants to add a new way
+to add money or withdraw money, they will first need to select a country.  From there
+they will be shown what payment methods are available.  This result from this call
+will help to populate that list.</li>
+<li><strong><a href="#get-locations">Get Locations</a></strong> (Optional) <strong>-</strong> Some payment methods, such as ATM, 
+are done at physical locations.  This call allows Abra to show its customers where these 
+place are located.</li>
+<li><strong><a href="#get-required-fields">Get Required Fields</a> -</strong> Once a location has been selected, 
+the user must fill in their personal information.  This call allows Abra to determine 
+what information is required by the exchange for KYC purposes and to initiate 
+withdraws/deposits.<br></li>
+<li><strong><a href="#post-account">Post Account</a> -</strong> Once the user has provided Abra with all their 
+information, Abra will direct it to the exchange through the Post Account call.  The
+exchange creates a user account in their system and also provides Abra with the API
+key for the user and account ID.</li>
+<li><strong><a href="#post-kyc">Post KYC</a></strong> (Optional) <strong>-</strong> If the exchange accepts KYC information in 
+the previous call, then this step would be skipped, otherwise, the KYC information would 
+be directed to the exchange during this step.  Another possible situation is that the 
+exchange has tiered KYC, and they don&rsquo;t require KYC at the lowest tier.  This step is 
+skipped in that instance as well.</li>
+<li><strong><a href="#post-kyc-documents">Post KYC Documents</a></strong> (Optional) <strong>-</strong> Like the previous call,
+this is optional as well.  This will only be required if the KYC tier the customer is 
+aiming for requires Documents.<br></li>
+</ol>
+
+<h3 id="if-issues">If issues&hellip;</h3>
+
+<ul>
+<li><strong><a href="#patch-account">Patch Account</a> -</strong> If an account enters a HOLD or PENDING state, this
+call is used to modify the account.  Normally an account will enter one of these states
+because the User information appears wrong or more information is required.</li>
+<li><strong><a href="#patch-kyc">Patch KYC</a> -</strong> Same purpose as described above.</li>
+<li><strong><a href="#post-kyc-documents">Post KYC Documents</a> -</strong> Same purpose as above, but used only
+to post new Documents.  If replacing a document is required, it needs to be deleted first.</li>
+<li><strong><a href="#delete-kyc-documents">Delete KYC Documents</a> -</strong> Used to delete documents that need
+to be replaced.</li>
+</ul>
+
+<h2 id="withdraw">Withdraw</h2>
+
+<p>During a withdraw, a user wants to take money out of their Abra wallet.  This can be for
+taking Fiat out, to make a purchase, or for a variety of other reasons.</p>
+
+<p>The BTC address of the user at the exchange is first retrieved.  A transaction of type
+Deposit BTC is done.  The order books are retrieved in order to send a Limit Order to
+sell the BTC.  Once the Limit Order is fulfilled a transaction of type Withraw Fiat is
+created to move the Fiat out of the exchange into the endpoint chosen by the user.</p>
+
+<h3 id="happy-path">Happy Path</h3>
+
+<ol>
+<li><strong><a href="#get-btc-address">Get BTC Address</a> -</strong> Abra retrieves the exchanges&rsquo;s BTC Address 
+that the belongs to the user.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a> -</strong>  A <strong>BTC Deposit</strong> transaction 
+is created that informs the exchange of the actual BTC being placed on the blockchain 
+and directed to the BTC address received in the previous call.</li>
+<li><strong><a href="#get-order-books">Get Order Books</a> -</strong> Viewing the current books will help to 
+create Limit Orders that will be fulfilled in a timely manner, which is crucial for
+Abra transactions.</li>
+<li><strong><a href="#post-limit-order">Post Limit Order</a> -</strong> A Limit Order is created to actually
+sell the BTC currently in the user&rsquo;s bitcoin account at the exchange.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a></strong> (Optional) <strong>-</strong> If Limit Order&rsquo;s are not
+available, Abra creates a <strong>Sell BTC</strong> transaction using a quote from the exchange
+in order to convert the BTC into Fiat.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a> -</strong> After the BTC has been converted to Fiat, 
+Abra will create a <strong>Withdraw Fiat</strong> transaction in order to move the money out of the 
+exchange to the user&rsquo;s desired endpoint.</li>
+</ol>
+
+<h3 id="if-issues">If issues&hellip;</h3>
+
+<ul>
+<li><strong><a href="#patch-limit-order">Patch Limit Order</a> -</strong> This will only be used by the admin.
+Normally limit orders will not be patched.  They instead will be deleted and a new one
+will be created.  However, in exeptional situations, a patch might be required.</li>
+<li><strong><a href="#delete-limit-order">Delete Limit Order</a> -</strong>  If a limit order is not being filled,
+chances are the amount is too high or too low.  In that situation, the limit order will be
+canceled so that a new one can be created.</li>
+<li><strong><a href="#delete-transaction">Delete Transaction</a> -</strong>  If a user decided they don&rsquo;t want to go
+through with a transaction, and the transaction has not been completed, a cancellation
+might be possible.  The cancellation would be done through this call.</li>
+</ul>
+
+<h2 id="deposit">Deposit</h2>
+
+<p>A deposit takes place when a user wants to put money into their Abra wallet.  To do this,
+a user would have to visit an endpoint that accepts deposits.  Depositing to a bank 
+account is a way for the user to do this.</p>
+
+<p>The user first selects an endpoint from the list.  Abra will then return instructions to
+the user on how to actually deposit money so that it goes to their exchange account.  Once
+the exchange account has funds, the books are retrieved to come up with a well priced
+limit order to purchase BTC.  The limit order is created and the BTC are purchased.  Abra
+then tells the exchange to deposit the BTC into the user&rsquo;s Abra wallet.  The Deposit is
+now considered complete.</p>
+
+<h3 id="happy-path">Happy Path</h3>
+
+<ol>
+<li><strong><a href="#get-account">Get Account</a> -</strong> Abra first retrieves the user&rsquo;s Exchange Fiat account 
+to return instructions on how to actually do a deposit into that account.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a> -</strong> When the exchange receives the deposit, 
+they need to let Abra know that there is money in the account.  They do this by creating 
+a transaction of type <strong>Deposit Fiat</strong>.</li>
+<li><strong><a href="#get-order-books">Get Order Books</a> -</strong> Abra now needs to move the fiat into BTC.<br>
+To do this, Abra must retrieve the books to see what a good price would be for a Limit 
+Order.</li>
+<li><strong><a href="#post-limit-order">Post Limit Order</a> -</strong> Abra now creates a Limit Order to buy BTC 
+using the Fiat in the user&rsquo;s exchange account.  The limit order must be priced so that 
+it gets filled in a timely manner.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a></strong> (Optional) <strong>-</strong> If the exchange does not 
+use Limit Orders Abra would have to send a Transaction of type <strong>Buy BTC</strong> in order 
+to purchase the bitcoin.</li>
+<li><strong><a href="#post-transaction">Post Transaction</a> -</strong> Once the BTC is in the user&rsquo;s BTC account, 
+Abra can now ask the exchange to deposit the bitcoin into the user&rsquo;s Abra Wallet by 
+passing in a BTC address that belongs to the user. </li>
+</ol>
+
+<h3 id="if-issues">If issues..</h3>
+
+<ul>
+<li><strong><a href="#patch-limit-order">Patch Limit Order</a> -</strong> This will only be used by the admin. 
+Normally limit orders will not be patched.  They instead will be deleted and a new one 
+will be created.  However, in exeptional situations, a patch might be required.</li>
+<li><strong><a href="#delete-limit-order">Delete Limit Order</a> -</strong> If a limit order is not being filled, 
+chances are the amount is too high or too low.  In that situation, the limit order will be 
+canceled so that a new one can be created.</li>
+<li><strong><a href="#delete-transaction">Delete Transaction</a> -</strong>  If a user decided they don&rsquo;t want to go
+through with a transaction, and the transaction has not been completed, a cancellation
+might be possible.  The cancellation would be done through this call.</li>
+</ul>
+
+<h2 id="notifications">Notifications</h2>
+
+<p>Notifications are not their own flow, but fit into each of the flows mentioned above.  For
+most steps in the 3 actions above, Abra can&rsquo;t continue onto the next step until a
+notification is received that informs the completion of the previous step.  For example, 
+Step 5 and Step 6 in Account Creation are not required unless a notification informing
+Abra of an Account requiring more KYC information is received.  Likewise, Step 6 in
+Withdraw and Deposit are not possible until a notification is received that the Limit Order
+has been fulfilled and funds are available.</p>
+
+<ol>
+<li><strong><a href="#get-notifications">Get Notifications</a> -</strong> Abra retrieves notifications from 
+exchange to update Orders, Transactions and Accounts.</li>
+<li><strong><a href="#delete-notification">Delete Notification</a> -</strong> Once a notification has been processed,
+Abra deletes it so that they don&rsquo;t receive it again.</li>
+</ol>
+
+          <h1 id="authorization">Authorization</h1>
 
 <p>Every request will require an Authorization header to guarantee the origination of the request is a valid one.
 The Exchange will provide Abra with a <strong>Secret Key</strong> and an <strong>API Key</strong>.</p>
@@ -1442,6 +1670,74 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 </tr>
 </tbody></table>
 
+<h2 id="delete-transaction">Delete Transaction</h2>
+
+<p>Delete Transaction for Exchange Account</p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">DELETE https://goabra.com/v1/accounts/&lt;ID&gt;/transactions/&lt;txid&gt;</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>txid</td>
+<td>path</td>
+<td>string</td>
+<td>Transaction ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Transaction Deleted</td>
+<td>None</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Accound ID or Transaction ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>404</td>
+<td>No Transaction Found</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
 <h1 id="notifications">Notifications</h1>
 
 <h2 id="get-notifications">Get Notifications</h2>
@@ -1681,7 +1977,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>notes</td>
 <td>string</td>
-<td>Specific notes on how to Deposit at Company</td>
+<td>Specific notes on how to deposit at Company</td>
 </tr>
 <tr>
 <td>account_types</td>
@@ -1837,9 +2133,9 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <td><a href="#kyc">KYC</a></td>
 </tr>
 <tr>
-<td>bank</td>
+<td>company</td>
 <td>string</td>
-<td>Bank Code</td>
+<td>Company Code</td>
 </tr>
 <tr>
 <td>fiat_balance</td>
@@ -1895,12 +2191,12 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>field_required</td>
 <td>boolean</td>
-<td>Boolean that defines if field is mandatory - <code class="prettyprint">true</code> or optional - <code class="prettyprint">false</code></td>
+<td>Boolean that defines if Field is mandatory - <code class="prettyprint">true</code> or optional - <code class="prettyprint">false</code></td>
 </tr>
 <tr>
 <td>field_validation_regex</td>
 <td>string</td>
-<td>Regex used for field validation</td>
+<td>Regex used for Field validation</td>
 </tr>
 </tbody></table>
 
@@ -1971,7 +2267,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>country</td>
 <td>string</td>
-<td>Country in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a></td>
+<td>Country in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">ISO 3166-1 Alpha-2</a> format</td>
 </tr>
 <tr>
 <td>documents</td>
@@ -2058,7 +2354,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>code</td>
 <td>string</td>
-<td>Code used by exchange to identify Location</td>
+<td>Code used by Exchange to identify Location</td>
 </tr>
 <tr>
 <td>payment methods</td>
@@ -2180,7 +2476,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>notification_id</td>
 <td>string</td>
-<td>Identifier number for notification</td>
+<td>Identifier number for Notification</td>
 </tr>
 <tr>
 <td>notification_type</td>
@@ -2190,12 +2486,12 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>identifier</td>
 <td>string</td>
-<td>Depending on notification_type this is the Identifier of either Account, Order or Transaction</td>
+<td>Depending on notification_type, this is the Identifier of either Account, Limit Order or Transaction</td>
 </tr>
 <tr>
 <td>new_status</td>
 <td>string</td>
-<td>Depending on notification_type this is either an <a href="#account-status">Account_status</a>, <a href="#limit-order-status">Limit Order Status</a> or a <a href="#transaction-status">Transaction Status</a></td>
+<td>Depending on notification_type, this is either an <a href="#account-status">Account_status</a>, <a href="#limit-order-status">Limit Order Status</a> or a <a href="#transaction-status">Transaction Status</a></td>
 </tr>
 <tr>
 <td>message</td>
@@ -2263,7 +2559,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <tr>
 <td>tx_id</td>
 <td>string</td>
-<td>Identifier of Transaction.</td>
+<td>Transaction Identifier.</td>
 </tr>
 <tr>
 <td>tx_id_type</td>
@@ -2274,6 +2570,11 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <td>transaction_type</td>
 <td>string</td>
 <td><a href="#transaction-type">Type of Transaction</a></td>
+</tr>
+<tr>
+<td>partner_tx_id</td>
+<td>string</td>
+<td>Transaction Identifier in partner system</td>
 </tr>
 <tr>
 <td>account_id</td>
@@ -2324,6 +2625,16 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <td>originating_btc_address</td>
 <td>string</td>
 <td>Originating BTC Address</td>
+</tr>
+<tr>
+<td>fiat_account_number</td>
+<td>string</td>
+<td>In case of Fiat withdraw, this is the destination account number</td>
+</tr>
+<tr>
+<td>fiat_account_type</td>
+<td>string</td>
+<td><a href="#account-type">Account Type</a> of destination Fiat account</td>
 </tr>
 <tr>
 <td>related_transaction</td>
@@ -2599,7 +2910,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 </tr>
 <tr>
 <td>003</td>
-<td>Withdrawal BTC</td>
+<td>Withdraw BTC</td>
 </tr>
 <tr>
 <td>004</td>
@@ -2611,7 +2922,7 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 </tr>
 <tr>
 <td>006</td>
-<td>Withdrawal Fiat</td>
+<td>Withdraw Fiat</td>
 </tr>
 </tbody></table>
 
