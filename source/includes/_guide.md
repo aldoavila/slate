@@ -24,13 +24,13 @@ as close as possible to the suggested solutions defined in this API guide.  Abra
 is available for any questions.
 5. **Abra Development -** If anything special is required by the exchange, Abra will
 develop with the availability of the exchange in case questions arise.
-6. **pre-certification -** Exchange and Abra pre-certify the integration in the sandbox
+6. **Pre-certification -** Exchange and Abra pre-certify the integration in the sandbox
 environment.  Any failed cases are noted.
 7. **Fix failure cases -** Abra and the Exchange fix any cases that failed during the
 pre-certification
-8. **finish pre-certification -** Any cases that were failing are redone to confirm that 
+8. **Finish pre-certification -** Any cases that were failing are redone to confirm that 
 they are now passing.
-9. **certify -** Run through certification steps.  At this point any failed steps require
+9. **Certify -** Run through certification steps.  At this point any failed steps require
 the certification to be restarted from the beginning once a fix is implemented.
 10. **Exchange Production Credentials -** The Exchange provides Abra with production 
 credentials and production permissions.  Abra does the same.
@@ -189,7 +189,7 @@ canceled so that a new one can be created.
 through with a transaction, and the transaction has not been completed, a cancellation
 might be possible.  The cancellation would be done through this call.
 
-##Notifications
+## Notifications
 Notifications are not their own flow, but fit into each of the flows mentioned above.  For
 most steps in the 3 actions above, Abra can't continue onto the next step until a
 notification is received that informs the completion of the previous step.  For example, 
