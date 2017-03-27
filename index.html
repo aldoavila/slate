@@ -218,7 +218,7 @@ the previous call, then this step would be skipped, otherwise, the KYC informati
 be directed to the exchange during this step.  Another possible situation is that the 
 exchange has tiered KYC, and they don&rsquo;t require KYC at the lowest tier.  This step is 
 skipped in that instance as well.</li>
-<li><strong><a href="#post-kyc-documents">Post KYC Documents</a></strong> (Optional) <strong>-</strong> Like the previous call,
+<li><strong><a href="#post-kyc-document">Post KYC Document</a></strong> (Optional) <strong>-</strong> Like the previous call,
 this is optional as well.  This will only be required if the KYC tier the customer is 
 aiming for requires Documents.<br></li>
 </ol>
@@ -230,9 +230,9 @@ aiming for requires Documents.<br></li>
 call is used to modify the account.  Normally an account will enter one of these states
 because the User information appears wrong or more information is required.</li>
 <li><strong><a href="#patch-kyc">Patch KYC</a> -</strong> Same purpose as described above.</li>
-<li><strong><a href="#post-kyc-documents">Post KYC Documents</a> -</strong> Same purpose as above, but used only
+<li><strong><a href="#post-kyc-document">Post KYC Document</a> -</strong> Same purpose as above, but used only
 to post new Documents.  If replacing a document is required, it needs to be deleted first.</li>
-<li><strong><a href="#delete-kyc-documents">Delete KYC Documents</a> -</strong> Used to delete documents that need
+<li><strong><a href="#delete-kyc-document">Delete KYC Document</a> -</strong> Used to delete documents that need
 to be replaced.</li>
 </ul>
 
@@ -771,6 +771,69 @@ These could be Banks, Store Franchises, ATM Brands, etc.</p>
 <td>path</td>
 <td>string</td>
 <td>Exchange Account ID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>HTTP Status Code</th>
+<th>Message</th>
+<th>Response Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Successful Response</td>
+<td><a href="#kyc">KYC</a></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Exchange Account ID</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td><a href="#error-object">Error Object</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="post-kyc">Post KYC</h2>
+
+<p>Post KYC information for Exchange Account  </p>
+
+<h3 id="https-request">HTTPS Request</h3>
+
+<p><code class="prettyprint">POST https://goabra.com/v1/accounts/&lt;ID&gt;/kyc</code></p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>location</th>
+<th>type</th>
+<th>Request Object</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ID</td>
+<td>path</td>
+<td>string</td>
+<td>Exchange Account ID</td>
+</tr>
+<tr>
+<td>body</td>
+<td>body</td>
+<td>object</td>
+<td><a href="#kyc">KYC</a></td>
 </tr>
 </tbody></table>
 
